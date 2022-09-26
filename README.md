@@ -36,7 +36,7 @@ Use the command `node index.js` to run the file and begin answering the prompts.
 Fork the repository to make the code your own. Feel free to submit a push request if you have made additions you think others would find beneficial.
 
 ## Testing
-No tests to be included.
+WIP
 
 ## Questions
 If you have any questions regarding this project, or anything else regarding my work, please reach out to me via email or GitHub.
