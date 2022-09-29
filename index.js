@@ -11,8 +11,16 @@ const inquirer = require("inquirer");
 const fs = require("fs");
 const jest = require("jest");
 
+// Include class files
+const Employee = require("./lib/Employee");
+const Manager = require("./lib/Manager");
+const Engineer = require("./lib/Engineer");
+const Intern = require("./lib/Intern");
 
+// Include HTML template
+const generateHTML = require("./dist/generateHTML")
 
+const buildTeam = [];
 
 // Include inquirer prompt "names" to perform substitutions in template literal
 // Content of the HTML file
@@ -24,84 +32,142 @@ ${licenseText(name, license, describe)}
 
 
 // Requesting user input with inquirer
-inquirer 
-	.prompt([
+// Prompts for adding employees to the team
+const addMember = () => {
+    inquirer.prompt ([
     {
         type: "input",
-        message: "What is your full name?*",
         name: "name",
+        message: "What is the team member's name?",
         validate: function(name) {
             if (name) {
                 return true;
             } else {
-                console.log("Your full name is required.")
+                console.log("The team member's name is required.")
                 return false;
             }
         }
     },
     {
-		type: "input",
-		message: "What is the title of your project, or the name of your repository?*",
-		name: "title",
-        validate: function(title) {
-            if (title) {
+        type: "list",
+        name: "role",
+        message: "What is the team member's role?",
+        choices: ["Manager", "Engineer", "Intern"],
+        validate: function(role) {
+            if (role) {
                 return true;
             } else {
-                console.log("A title for your project is required.")
+                console.log("The team member's role is required.")
+                return false;
+            }
+        }
+    },
+    {
+		type: "input",
+        name: "id",
+		message: "What is the team member's ID?",
+        validate: function(id) {
+            if (id) {
+                return true;
+            } else {
+                console.log("The team member's id is required.")
                 return false;
             }
         }
 	},
-	{
-		type: "input",
-		message: "How would you describe your project? (What was your motivation? What problem does it solve? What did you learn?)",
-		name: "describe",
-	},
-	{
-		type: "input",
-        message: "What are the steps required to install your project? Provide a step-by-step description of how to get the development environment running?",
-        name: "install",
-    },
     {
 		type: "input",
-        message: "What are instructions for usage?",
-        name: "usage",
-    },
-    {
-		type: "list",
-        message: "What license would you like to choose for your project? A license tells others what they can and cannot do with your code.",
-        name: "license",
-        choices: [
-            "Apache License v2.0", "GNU General Public License v3.0", "MIT License", "none",
-        ],
-    },
-    {
-		type: "input",
-        message: "How can others contribute to the code?",
-        name: "contribute",
-    },
-    {
-		type: "input",
-        message: "What tests would you like to include for your program?",
-        name: "test",
-    },
-    {
-		type: "input",
-        message: "What is the URL to your GitHub?",
-        name: "github",
-    },
-    {
-		type: "input",
-        message: "What is your email address?",
         name: "email",
-    },
-])
+        message: "What is the team member's email address?",       
+        validate: function(email) {
+            valid = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test(email)
+            if (valid) {
+                return true;
+            } else {
+                console.log("A valid email address for the team member is required.")
+                return false;
+            }
+        }
+    }])
+    .then(function({ name, role, id, email }) {
+        let roleInfo = "";
+        if (role === "Manager") {
+            roleInfo = "office number";
+        } else if (role === "Engineer") {
+            roleInfo = "GitHub username";
+        } else if (role === "Intern") {
+            roleInfo = "school name";
+        }
+
+        inquirer.prompt([
+        {
+            type: "input",
+            name: "roleInfo",
+            message: `What is the team member's ${roleInfo}?`,
+            validate: function(roleInfo) {
+                if (roleInfo) {
+                    return true;
+                } else {
+                    console.log(`The team member's ${roleInfo} is required.`)
+                    return false;
+                }
+            }
+        },
+        {
+            type: "confirm",
+            message: "Would you like to add another member to the team?",
+            name: "addMore",
+            default: false
+        }])
+    }
+
+    .then(employeeData => {
+
+        let { role, name, id, email, github, school, addMore } = employeeData;
+        let newMember;
+
+        if (role === "Manager") {
+
+            newMember = new Manager (name, id, email, roleInfo);
+
+        } else if (role === "Engineer") {
+
+            newMember = new Engineer (name, id, email, roleInfo);
+
+        } else if (role === "Intern") {
+
+            newMember = new Intern (name, id, email, roleInfo);
+
+        }
+        buildTeam.push(newMember);
+        addHtml(newMember);
+        .then(function(addMore) {
+            if (addMore) {
+                addMember();
+            } else {
+                finishHtml();
+            }
+        }
+    })
+    
+}
+
 
     // Generating HTML file
-	.then((answers) => {
-		const mdPageContent = generateHTML(answers);
-        console.log(answers);
-		fs.writeFile("README.md", mdPageContent, (err) =>
-			err ? console.log(err) : console.log("Successfully created README.md!")
-		);
-	});
+
+
+
+    // const genFile = data => {    
+	// 	fs.writeFile("./dist/index.html", htmlPageContent, (err) =>
+	// 		err ? console.log(err) : console.log("Successfully created index.html!")
+	// 	);
+	// };
+
+
+	// .then((answers) => {
+	// 	const htmlPageContent = generateHTML(answers);
+    //     console.log(answers);
+	// 	fs.writeFile("index.html", htmlPageContent, (err) =>
+	// 		err ? console.log(err) : console.log("Successfully created index.html!")
+	// 	);
+	// });
