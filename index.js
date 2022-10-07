@@ -18,17 +18,14 @@ const Engineer = require("./lib/Engineer");
 const Intern = require("./lib/Intern");
 
 // Include HTML template
-const generateHTML = require("./dist/generateHTML")
+const generateHTML = require("./src/generateHTML")
 
-const buildTeam = [];
+const teamArray = [];
 
-// Include inquirer prompt "names" to perform substitutions in template literal
-// Content of the HTML file
-const generateHTML = ({ name, license, title, test, describe, install, usage, contribute, github, email }) =>
-`${title}  ${licenseBadge(license)}
-
-${licenseText(name, license, describe)}
-`;
+const runApp = () => {
+    
+    addMember();
+}
 
 
 // Requesting user input with inquirer
@@ -89,6 +86,7 @@ const addMember = () => {
             }
         }
     }])
+
     .then(function({ name, role, id, email }) {
         let roleInfo = "";
         if (role === "Manager") {
@@ -116,58 +114,48 @@ const addMember = () => {
         {
             type: "confirm",
             message: "Would you like to add another member to the team?",
-            name: "addMore",
+            name: "confirmContinue",
             default: false
         }])
-    }
+    })
 
     .then(employeeData => {
 
-        let { role, name, id, email, github, school, addMore } = employeeData;
+        let { role, name, id, email, roleInfo, confirmContinue } = employeeData;
         let newMember;
 
         if (role === "Manager") {
 
-            newMember = new Manager (name, id, email, roleInfo);
+            newMember = new Manager(name, id, email, roleInfo);
 
         } else if (role === "Engineer") {
 
-            newMember = new Engineer (name, id, email, roleInfo);
+            newMember = new Engineer(name, id, email, roleInfo);
 
         } else if (role === "Intern") {
 
-            newMember = new Intern (name, id, email, roleInfo);
+            newMember = new Intern(name, id, email, roleInfo);
 
         }
-        buildTeam.push(newMember);
-        addHtml(newMember);
-        .then(function(addMore) {
-            if (addMore) {
-                addMember();
-            } else {
-                finishHtml();
-            }
+        teamArray.push(newMember);
+        
+        if (confirmContinue) {
+            addMember();
+        } else {
+            let html = generateHTML(teamArray);
+
+            writeFile(html);
         }
+        
     })
-    
 }
-
 
     // Generating HTML file
 
+    const writeFile = data => {    
+		fs.writeFile("./dist/index.html", data, (err) =>
+			err ? console.log(err) : console.log("Your team profile has successfully been created as index.html!")
+		);
+	};
 
-
-    // const genFile = data => {    
-	// 	fs.writeFile("./dist/index.html", htmlPageContent, (err) =>
-	// 		err ? console.log(err) : console.log("Successfully created index.html!")
-	// 	);
-	// };
-
-
-	// .then((answers) => {
-	// 	const htmlPageContent = generateHTML(answers);
-    //     console.log(answers);
-	// 	fs.writeFile("index.html", htmlPageContent, (err) =>
-	// 		err ? console.log(err) : console.log("Successfully created index.html!")
-	// 	);
-	// });
+runApp();
