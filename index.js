@@ -85,56 +85,72 @@ const addMember = () => {
                 return false;
             }
         }
-    }])
-
-    .then(function({ name, role, id, email }) {
-        let roleInfo = "";
-        if (role === "Manager") {
-            roleInfo = "office number";
-        } else if (role === "Engineer") {
-            roleInfo = "GitHub username";
-        } else if (role === "Intern") {
-            roleInfo = "school name";
-        }
-
-        inquirer.prompt([
-        {
-            type: "input",
-            name: "roleInfo",
-            message: `What is the team member's ${roleInfo}?`,
-            validate: function(roleInfo) {
-                if (roleInfo) {
-                    return true;
-                } else {
-                    console.log(`The team member's ${roleInfo} is required.`)
-                    return false;
-                }
+    },
+    {
+        type: "input",
+        name: "officeNumber",
+        message: "What is the manager's office number?",
+        when: (input) => input.role === "Manager",
+        validate: function(officeNumber) {
+            if (officeNumber) {
+                return true;
+            } else {
+                console.log("The manager's office number is required.")
+                return false;
             }
-        },
-        {
-            type: "confirm",
-            message: "Would you like to add another member to the team?",
-            name: "confirmContinue",
-            default: false
-        }])
-    })
+        }
+    },
+    {
+        type: "input",
+        name: "github",
+        message: "What is the engineer's GitHub username?",
+        when: (input) => input.role === "Engineer",
+        validate: function(github) {
+            if (github) {
+                return true;
+            } else {
+                console.log("The engineer's GitHub username is required.")
+                return false;
+            }
+        }
+    },
+    {
+        type: "input",
+        name: "school",
+        message: "What is the intern's school?",
+        when: (input) => input.role === "Intern",
+        validate: function(school) {
+            if (school) {
+                return true;
+            } else {
+                console.log("The intern's school is required.")
+                return false;
+            }
+        }
+    },
+    {
+        type: "confirm",
+        name: "confirmContinue",
+        message: "Would you like to add another member to the team?",
+        default: false
+    }])
 
     .then(employeeData => {
 
-        let { role, name, id, email, roleInfo, confirmContinue } = employeeData;
+        let { role, name, id, email, officeNumber, github, school, confirmContinue } = employeeData;
         let newMember;
 
         if (role === "Manager") {
 
-            newMember = new Manager(name, id, email, roleInfo);
+            newMember = new Manager(name, id, email, officeNumber);
 
         } else if (role === "Engineer") {
 
-            newMember = new Engineer(name, id, email, roleInfo);
+            newMember = new Engineer(name, id, email, github);
 
         } else if (role === "Intern") {
 
-            newMember = new Intern(name, id, email, roleInfo);
+            newMember = new Intern(name, id, email, school);
 
         }
         teamArray.push(newMember);

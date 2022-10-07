@@ -7,9 +7,9 @@ return `
             <h3 class="card-title text-center">${managerData.getName()}</h3>
             <h5 class="card-title text-center"><span class="badge bg-danger">${managerData.getRole()}</span></h5>
               <ul class="text-left list-group list-group-flush">
-                <li class="list-group-item text-danger">ID: ${managerData.getId()}</li>
-                <li class="list-group-item text-danger">Email: <a href="${managerData.getEmail()}" class="card-link">${managerData.getEmail()}</a></li>
-                <li class="list-group-item text-danger">Office Number: ${managerData.getOfficeNumber()}<span class="text-dark">1</span></li>
+                <li class="list-group-item text-danger">ID: <span class="text-dark">${managerData.getId()}</span></li>
+                <li class="list-group-item text-danger">Email: <a href="mailto:${managerData.getEmail()}" class="card-link">${managerData.getEmail()}</a></li>
+                <li class="list-group-item text-danger">Office Number: <span class="text-dark">${managerData.getOfficeNumber()}</span></li>
               </ul>     
           </div>
         </div>
@@ -25,8 +25,8 @@ return `
             <h3 class="card-title text-center">${engineerData.getName()}</h3>
             <h5 class="card-title text-center"><span class="badge bg-success">${engineerData.getRole()}</span></h5>
               <ul class="text-left list-group list-group-flush">
-                <li class="list-group-item text-success">ID: ${engineerData.getId()}</li>
-                <li class="list-group-item text-success">Email: <a href="${engineerData.getEmail()}" class="card-link">${engineerData.getEmail()}</a></li>
+                <li class="list-group-item text-success">ID: <span class="text-dark">${engineerData.getId()}</span></li>
+                <li class="list-group-item text-success">Email: <a href="mailto:${engineerData.getEmail()}" class="card-link">${engineerData.getEmail()}</a></li>
                 <li class="list-group-item text-success">GitHub: <a href="http://www.github.com/${engineerData.getGithub()}" class="card-link">${engineerData.getGithub()}</a></li>
               </ul>     
           </div>
@@ -43,8 +43,8 @@ return `
             <h3 class="card-title text-center">${internData.getName()}</h3>
             <h5 class="card-title text-center"><span class="badge bg-info">${internData.getRole()}</span></h5>
               <ul class="text-left list-group list-group-flush">
-                <li class="list-group-item text-info">ID: ${internData.getId()}</li>
-                <li class="list-group-item text-info">Email: <a href="${internData.getEmail()}" class="card-link">${internData.getEmail()}</a></li>
+                <li class="list-group-item text-info">ID: <span class="text-dark">${internData.getId()}</span></li>
+                <li class="list-group-item text-info">Email: <a href="mailto:${internData.getEmail()}" class="card-link">${internData.getEmail()}</a></li>
                 <li class="list-group-item text-info">School: <span class="text-dark">${internData.getSchool()}</span></li>
               </ul>     
           </div>
