@@ -36,7 +36,9 @@ Use the command `node index.js` to run the file and begin answering the prompts.
 Fork the repository to make the code your own. Feel free to submit a push request if you have made additions you think others would find beneficial.
 
 ## Testing
-WIP
+There are 4 test suites, designed to test the class and class extensions, as per the "lib" folder, used in this app. 
+
+Simply use the command `npm test _tests_` to run these tests.
 
 ## Questions
 If you have any questions regarding this project, or anything else regarding my work, please reach out to me via email or GitHub.
