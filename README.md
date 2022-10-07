@@ -1,5 +1,7 @@
 # team-profile-generator [![License: Apache](https://img.shields.io/badge/License-Apache_2.0-blue.svg)](https://opensource.org/licenses/Apache-2.0)
 
+## [Video Walkthrough](https://watch.screencastify.com/v/aN4t5rS5iWqUjaltEf2l)
+
 ## Description
 This is a simple Node.js command-line application that takes user input and generates an HTML webpage summarizing information about different employees on a [software engineering] team. Unit tests are included to snure the code is maintainable. The motivation behind creating this application was XYZ.
 
